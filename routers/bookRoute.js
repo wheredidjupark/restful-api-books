@@ -4,7 +4,7 @@ var express = require('express');
 var routes = function(Books) {
     var bookRouter = express.Router();
 
-    bookRouter.route('/Books')
+    bookRouter.route('/')
         .get(function(req, res) {
 
             var query = {};
@@ -33,7 +33,7 @@ var routes = function(Books) {
 
         });
 
-    bookRouter.route('/Books/:bookId')
+    bookRouter.route('/:bookId')
         .get(function(req, res) {
             Books.findById(req.params.bookId, function(err, book) {
                 res.json(book);
