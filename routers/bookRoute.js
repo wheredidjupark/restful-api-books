@@ -38,6 +38,16 @@ var routes = function(Books) {
             Books.findById(req.params.bookId, function(err, book) {
                 res.json(book);
             });
+        })
+        .put(function(req,res){
+            Book.findById(req.params.bookId, function(err, book){
+                book.title = req.body.title;
+                book.author = req.body.author;
+                book.genre = req.body.genre;
+                book.read = req.body.read;
+                book.save();
+                res.json(book);
+            });
         });
 
     return bookRouter;
