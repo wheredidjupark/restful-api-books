@@ -2,36 +2,12 @@ var express = require('express');
 
 //recommended to wrap the routes with a function
 var routes = function(Books) {
+    var bookController = require('../controllers/bookController')(Books);
     var bookRouter = express.Router();
 
     bookRouter.route('/')
-        .get(function(req, res) {
-
-            var query = {};
-
-            if (req.query.genre) {
-                query.genre = req.query.genre;
-            }
-            if (req.query.author) {
-                query.author = req.query.author;
-            }
-
-            Books.find(query, function(err, books) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    res.json(books);
-                }
-            });
-        })
-        .post(function(req, res) {
-            var book = new Books(req.body);
-
-            book.save();
-            console.log(book);
-            res.status(201).send(book);
-
-        });
+        .get(bookController.get)
+        .post(bookController.post);
 
     //middleware implementation specifically for /:bookId 
     bookRouter.use('/:bookId', function(req, res, next) {
@@ -47,6 +23,9 @@ var routes = function(Books) {
             }
         });
     });
+
+    //var bookIdController = require('../controllers/bookIdController')(Books , req.book);
+
     bookRouter.route('/:bookId')
         .get(function(req, res) {
             //obsolete after implmenting middleware
